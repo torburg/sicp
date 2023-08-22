@@ -1,6 +1,8 @@
 #lang sicp
 
 (#%require rackunit)
+(#%require sicp)
+(#%require "common_funcs.rkt")
 
 #|
 #; 1.1
@@ -44,8 +46,6 @@ a)
 
 (define (middle-from-three x y z)
   (- (sum x y z) (max-from-three x y z) (min-from-three x y z)))
-
-|# (define (square x) (* x x)) #|
 
 (define (sum-of-sqaures x y)
   (+ (square x) (square y)))
@@ -93,28 +93,6 @@ a)
   (sqrt-iter 1.0 x))
 https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1-6-in-sicp
 #; 1.7
-
-(define (improve guess x)
-  (average guess (/ x guess)))
-
-(define (average x y)
-  (/ (+ x y) 2))
-
-(define (good-enough? guess x)
-  (< (abs (- (square guess) x))
-     (* 0.0000001 guess)))
-
-(define (square x) (* x x))
-
-(define (sqrt-iter guess x)
-  (if (good-enough? guess x)
-          guess
-          (sqrt-iter (improve guess x)
-                     x)))
-
-
-(define (square-root a)
-  (sqrt-iter 1.0 a))
 
 (check-equal? (round (* 1000 (square-root 4.0))) 2000.0)
 (check-equal? (round (* 1000 (square-root 100.0))) 10000.0)
@@ -383,10 +361,6 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ;         ((even? n) (square (fast-expt b (/ n 2))))
 ;         (else (* b (fast-expt b (- n 1))))))
 
-; (define (even? n)
-;   (= (remainder n 2) 0))
-
-
 ; slow remainder func
 ; (define (remainder n d)
 ;   (cond ((= n 0) 0)
@@ -411,6 +385,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (check-equal? (remainder 3 2) 1)
 ; (check-equal? (remainder 3 3) 0)
 ; (check-equal? (remainder 30 28) 2)
+; (check-equal? (remainder -5 2) 1)
 
 ; 1.16
 ; (define (solution b n)
@@ -499,4 +474,198 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (check-equal? (mul-iter 5 0) 0)
 ; (check-equal? (mul-iter 5 15) (* 5 15))
 
+; 1.20
+; (define (gcd a b)
+;   (if (= b 0)
+;       a
+;       (gcd b (remainder a b))))
+
+; ; нормальный
+; (gcd 206 40)
+; (gcd 40 (remainder 206 40))
+; (gcd 6 (remainder 40 6))
+; (gcd 4 (remainder 6 4))
+; (gcd 2 (remainder 4 2))
+; (gcd 2 0)
+
+; ; аппликативный
+; (gcd 206 40)
+; (gcd 40 6)
+; (gcd 6 4)
+; (gcd 4 2)
+; (gcd 2 0)
+
+; 1.21
+; (define (smallest-divisor n)
+;   (define (find-divisor n test-divisor)
+;     (cond ((> (square test-divisor) n) n)
+;       ((divides? test-divisor n) test-divisor)
+;       (else (find-divisor n (+ test-divisor 1)))))
+
+;   (find-divisor n 2))
+
+
+; (define (divides? a b)
+;   (= (remainder b a) 0))
+
+; (define (prime? n)
+;   (= n (smallest-divisor n)))
+
+; (equal? (smallest-divisor 199) 199)
+; (equal? (smallest-divisor 1999) 1999)
+; (equal? (smallest-divisor 19999) 7)
+
+; 1.22
+; (define (timed-prime-test n out)
+
+;   (define (start-prime-test n start-time out)
+;     (if (prime? n)
+;       (report-prime (- (runtime) start-time) out)))
+
+;   (define (report-prime elapsed-time out)
+;     (display " *** " out)
+;     (display (floor elapsed-time) out))
+;     (newline)
+;     (display n out)
+
+;   (start-prime-test n (runtime) out))
+
+
+; (define (search-for-primes from to op)
+;   (define (iteration x)
+;     (cond ((<= x to)
+;       (timed-prime-test x op) 
+;       (iteration (+ x 2)))))
+
+    
+;   (iteration (if (even? from) (+ from 1) from)))
+
+
+; (define op1 (current-output-port))
+; (search-for-primes 1000 10000 op1)
+; 7993 *** 56
+; 8009 *** 88
+; 8011 *** 51
+
+; (search-for-primes 10000 100000 op1)
+; ; 97987 *** 1170
+; ; 98009 *** 1192
+; ; 98011 *** 1047
+
+; (search-for-primes 100000 1000000 op1)
+; ; 126233 *** 1094
+; ; 126241 *** 1107
+; ; 126257 *** 1106
+
+
+; 1.23
+
+; (equal? (next 4) 6)
+
+; (define (new-smallest-divisor n)
+;   (define (find-divisor test-divisor)
+;     (cond ((> (square test-divisor) n) n)
+;       ((divides? test-divisor n) test-divisor)
+;       (else (find-divisor (next test-divisor)))))
+
+;   (find-divisor 2))
+
+; (define (new-prime? n)
+;   (= n (new-smallest-divisor n)))
+
+; (equal? (new-smallest-divisor 199) 199)
+; (equal? (new-smallest-divisor 1999) 1999)
+; (equal? (new-smallest-divisor 19999) 7)
+
+
+; (define (new-timed-prime-test n out)
+
+;   (define (new-start-prime-test n start-time out)
+;     (if (new-prime? n)
+;       (report-prime (- (runtime) start-time) out)))
+
+;   (define (report-prime elapsed-time out)
+;     (display " *** " out)
+;     (display (floor elapsed-time) out))
+;     (newline)
+;     (display n out)
+
+;   (new-start-prime-test n (runtime) out))
+
+
+; with optimized new-smallest-divisor
+; (new-timed-prime-test 7993 op1)
+; ; 7993 *** 31
+; (new-timed-prime-test 8009 op1)
+; ; 8009 *** 30
+; (new-timed-prime-test 8011 op1)
+; ; 8011 *** 29
+
+; (new-timed-prime-test 97987 op1)
+; ; ; 97987 *** 512
+; (new-timed-prime-test 98009 op1)
+; ; ; 98009 *** 487
+; (new-timed-prime-test 98011 op1)
+; ; ; 98011 *** 484
+
+; (new-timed-prime-test 126233 op1)
+; ; ; 126233 *** 598
+; (new-timed-prime-test 126241 op1)
+; ; ; 126241 *** 523
+; (new-timed-prime-test 126257 op1)
+; ; 126257 *** 509
+
+
+; (define (sum-rec term a next b) 
+;   (if (> a b)
+;     0
+;     (+ (term a) (sum term (next a) next b))))
+
+; ; 1.30
+; (define (sum term a next b)
+;   (define (iter a result)
+;     (if (> a b)
+;       result
+;       (iter (next a) (+ result (term a)))))
+  
+;   (iter a 0))
+
+; (sum indentity 1 inc 10)
+
+; 1.31
+
+; (define (product term a next b)
+;   (define (iter a result)
+;     (if (> a b)
+;       result
+;       (iter (next a) (* result (term a)))))
+  
+;   (iter a 1))
+
+; (define (factorial n)
+;   (product identity 1 inc n))
+
+; (check-equal? (product square 1 inc 3) 36)
+; (check-equal? (product identity 3 inc 5) 60)
+; (check-equal? (factorial 5) 120) ; 120 1*2*3*4*5
+
+; 1.32
+; (define (accumulate combiner null-value term a next b)
+;   (define (iter a result)
+;       (if (> a b)
+;         result
+;         (iter (next a) (combiner result (term a)))))
+  
+;   (iter a null-value))
+
+; (define (accumulate-rec combiner null-value term a next b)
+;   (if (> a b) null-value
+;     (combiner (term a)
+;               (accumulate-rec combiner null-value term (next a) next b))))
+
+; (check-equal? (accumulate * 1 square 1 inc 3) 36)
+; (check-equal? (accumulate * 1 identity 3 inc 5) 60)
+; (check-equal? (factorial 5) 120) ; 120 1*2*3*4*5
+
+; 1.33
 
