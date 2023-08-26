@@ -2,6 +2,7 @@
 
 (#%require rackunit)
 (#%require sicp)
+; (#%require math/base)
 (#%require "common_funcs.rkt")
 
 #|
@@ -151,7 +152,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
     (/ (+ x y) 2))
 
   (define (square a) (* a a))
-  
+
   (sqrt-iter 1.0))
 
 (square-root 9)
@@ -174,7 +175,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (9)
 
 
-    
+
 ; (define (+ a b)
 ;   (if (= a 0)
 ;       b
@@ -288,7 +289,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (4)
 
 ; (f 4)
-; (+ (f 3) (* 2 (f 2) (* 3 (f 1)))) ; 
+; (+ (f 3) (* 2 (f 2) (* 3 (f 1)))) ;
 ; (+ (+ (f 2) (* 2 (f 1)) (* 3 (f 0))) (* 2 2) (* 3 1))
 ; (+ (+ 2 (* 2 1) (* 3 0)) 4 3)
 ; (+ (+ 2 2 0) 4 3)
@@ -301,10 +302,10 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (4)
 
 
-; (define (f-iter n) 
-;    (define (iter-impl a b c count) 
-;       (if (= count 0) a 
-;         (iter-impl b c (+ c (* 2 b) (* 3 a)) (- count 1)))) 
+; (define (f-iter n)
+;    (define (iter-impl a b c count)
+;       (if (= count 0) a
+;         (iter-impl b c (+ c (* 2 b) (* 3 a)) (- count 1))))
 ;    (iter-impl 0 1 2 n))
 
 ; (f-iter 4)
@@ -327,7 +328,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; 51 52 53 54 55
 
 ; 1 (+ 51 52) (+ 52 53) (+ 53 54) (+ 54 55) 1
-; 61 62 
+; 61 62
 
 ;1
 ;1 1
@@ -356,7 +357,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ;                   (* b product))))
 
 
-; (define (fast-expt b n) 
+; (define (fast-expt b n)
 ;   (cond ((= n 0) 1)
 ;         ((even? n) (square (fast-expt b (/ n 2))))
 ;         (else (* b (fast-expt b (- n 1))))))
@@ -389,7 +390,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 
 ; 1.16
 ; (define (solution b n)
-;   (define (fast-exp-iter b n a) 
+;   (define (fast-exp-iter b n a)
 ;     (cond ((= n 0) a)
 ;           ((even? n) (fast-exp-iter (square b) (/ n 2) a))
 ;           (else (fast-exp-iter b (- n 1) (* a b)))))
@@ -431,7 +432,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 
 ; (define (fast-mul a b)
 ;   (cond ((= b 0) 0)
-;         ((even? b) 
+;         ((even? b)
 ;           (double (fast-mul a (halve b))))
 ;         (else (+ a (fast-mul a (- b 1))))))
 
@@ -447,7 +448,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (define (mul-iter a b)
 ;   (define (mul-iter-impl a b acc)
 ;     (cond ((= b 0) acc)
-;         ((even? b) 
+;         ((even? b)
 ;           (mul-iter-impl (double a) (halve b) acc))
 ;         (else (mul-iter-impl a (- b 1) (+ acc a)))))
 
@@ -496,20 +497,20 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (gcd 2 0)
 
 ; 1.21
-; (define (smallest-divisor n)
-;   (define (find-divisor n test-divisor)
-;     (cond ((> (square test-divisor) n) n)
-;       ((divides? test-divisor n) test-divisor)
-;       (else (find-divisor n (+ test-divisor 1)))))
+(define (smallest-divisor n)
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n) n)
+          ((divides? test-divisor n) test-divisor)
+          (else (find-divisor n (+ test-divisor 1)))))
 
-;   (find-divisor n 2))
+  (find-divisor n 2))
 
 
-; (define (divides? a b)
-;   (= (remainder b a) 0))
+(define (divides? a b)
+  (= (remainder b a) 0))
 
-; (define (prime? n)
-;   (= n (smallest-divisor n)))
+(define (prime? n)
+  (= n (smallest-divisor n)))
 
 ; (equal? (smallest-divisor 199) 199)
 ; (equal? (smallest-divisor 1999) 1999)
@@ -534,10 +535,10 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (define (search-for-primes from to op)
 ;   (define (iteration x)
 ;     (cond ((<= x to)
-;       (timed-prime-test x op) 
+;       (timed-prime-test x op)
 ;       (iteration (+ x 2)))))
 
-    
+
 ;   (iteration (if (even? from) (+ from 1) from)))
 
 
@@ -616,7 +617,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; ; 126257 *** 509
 
 
-; (define (sum-rec term a next b) 
+; (define (sum-rec term a next b)
 ;   (if (> a b)
 ;     0
 ;     (+ (term a) (sum term (next a) next b))))
@@ -627,7 +628,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ;     (if (> a b)
 ;       result
 ;       (iter (next a) (+ result (term a)))))
-  
+
 ;   (iter a 0))
 
 ; (sum indentity 1 inc 10)
@@ -639,7 +640,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ;     (if (> a b)
 ;       result
 ;       (iter (next a) (* result (term a)))))
-  
+
 ;   (iter a 1))
 
 ; (define (factorial n)
@@ -655,7 +656,7 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ;       (if (> a b)
 ;         result
 ;         (iter (next a) (combiner result (term a)))))
-  
+
 ;   (iter a null-value))
 
 ; (define (accumulate-rec combiner null-value term a next b)
@@ -668,4 +669,227 @@ https://stackoverflow.com/questions/1171252/whats-the-explanation-for-exercise-1
 ; (check-equal? (factorial 5) 120) ; 120 1*2*3*4*5
 
 ; 1.33
+
+(define (filtered-accumulate combiner null-value term a next b filter?)
+  (define (iter x result)
+    (cond ((> x b) result)
+          ((filter? x) (iter (next x) (combiner result (term x))))
+          (else (iter (next x) result))))
+
+
+  (iter a null-value))
+
+; (define (filtered-accumulate-rec combiner null-value term a next b filter?)
+;   (if (> a b) null-value
+;     (combiner (if (filter? a) (term a) null-value)
+;               (filtered-accumulate-rec combiner null-value term (next a) next b filter?))))
+
+; (define (conditioning a)
+;   (if (< a 0) a
+;     (if (odd? a) (+ a 1))))
+
+
+; (conditioning 8)
+
+; (filtered-accumulate * 1 square 1 inc 3 odd?) ;9
+; (check-equal? (filtered-accumulate-rec * 1 square 1 inc 3 odd?) 9) ;9
+; (check-equal? (filtered-accumulate-rec * 1 identity 3 inc 5 odd?) 15)
+; (check-equal? (filtered-accumulate-rec + 0 identity 1 inc 10 odd?) 25)
+
+; (filtered-accumulate + 0 square 1 inc 1000 prime?)
+
+; (define n 9)
+; (define (condition a)
+;   (= (gcd a n) 1))
+
+
+; (filtered-accumulate * 1 identity 1 inc n condition)
+
+; (define (f g)
+;   (g 2))
+
+; (f f)
+
+; (define (close-enough? x y) (< (abs (- x y)) 0.001))
+
+; (define (search f neg-point pos-point)
+;   (let ((midpoint (average neg-point pos-point)))
+;   (if (close-enough? neg-point pos-point) midpoint
+;   (let ((test-value (f midpoint)))
+;   (cond ((positive? test-value) (search f neg-point midpoint))
+;         ((negative? test-value) (search f midpoint pos-point))
+;         (else midpoint))))))
+
+; (define (half-interval-method f a b)
+;   (let ((a-value (f a))
+;        (b-value (f b)))
+;   (cond ((and (positive? a-value) (negative? b-value)) (search f b a))
+;         ((and (negative? a-value) (positive? b-value)) (search f a b))
+;         (else (error "The same sings for f(a) and f(b)")))))
+
+
+; (half-interval-method sin 4.0 2.0)
+
+
+; 1.37
+(define (cont-frac n d k)
+  (if (= k 0) (/ (n 0) (d k))
+      (/ (n 0) (+ (d k) (cont-frac n d (- k 1))))))
+
+
+; (define (test k)
+;   (cont-frac (lambda (i) 1.0)
+;              (lambda (i) 1.0)
+;              k))
+
+
+; (check-equal? (round (* 1000 (test 100))) 618.0)
+; (round (* 1000 (test 100)))
+
+; (define (lambda-test f)
+;   (f 0))
+
+; (lambda-test (lambda (i) 1.0))
+
+; 1.38
+
+; (define (d n)
+;   (cond ((or (< n 1) (= n 1)) 1)
+;         ((= n 2) 2)
+;         ((= (remainder (+ n 1) 3) 0) (+ 2 (d (- n 3))))
+;         (else 1)))
+
+; (check-equal? (d 1) 1)
+; (check-equal? (d 2) 2)
+; (check-equal? (d 3) 1)
+; (check-equal? (d 4) 1)
+; (check-equal? (d 5) 4)
+; (check-equal? (d 6) 1)
+; (check-equal? (d 7) 1)
+; (check-equal? (d 8) 6)
+; (check-equal? (d 9) 1)
+; (check-equal? (d 10) 1)
+; (check-equal? (d 11) 8)
+
+; (define (e k)
+;   (exp 1))
+; (define (d n)
+;   (cond ((or (< n 1) (= n 1)) 1)
+;       ((= n 2) 2)
+;       ((= (remainder (+ n 1) 3) 0) (+ 2 (d (- n 3))))
+;       (else 1)))
+; (cont-frac (lambda (i) 1.0)
+;            d
+;            k))
+
+
+; (check-equal? (round (* 1000000000000 (e 100))) 2718281828459.0)
+; (check-equal? (round (* 100000 (e 10)))  271828.0)
+
+
+(define tolerance 0.00001)
+
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next) next
+          (try next))))
+
+  (try first-guess))
+
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
+(define (sqrt x)
+  (fixed-point (average-damp (lambda (y) (/ x y))) 1.0))
+
+(define dx 0.00001)
+
+(define (deriv g)
+  (lambda (x)
+    (/ (- (g (+ x dx)) (g x))
+       dx)))
+
+(define (newton-transform g)
+  (lambda (x) (- x (/ (g x) ((deriv g) x)))))
+
+(define (newtons-method g guess)
+  (fixed-point (newton-transform g) guess))
+
+(define (fixed-point-of-transform g transform guess)
+  (fixed-point (transform g) guess))
+
+; 1.40
+
+; (define (cubic a b c)
+;   (lambda (x) (+ (* x x x)
+;                  (* x x a)
+;                  (* x b)
+;                  c)))
+
+; (check-equal? (round (newtons-method (cubic 0 0 0) 1)) 0.0)
+; (check-equal? (round (newtons-method (cubic 0 0 (- 27)) 10)) 3.0)
+; (check-equal? (round (newtons-method (cubic 0 0 (- 81)) 10)) 4.0)
+; (check-equal? (round (newtons-method (cubic 2 8 (- 32)) 10)) 2.0)
+
+; 1.41
+
+; (define (double f)
+;   (lambda (x) (f (f x))))
+
+; (check-equal? (((double (double double)) inc) 5) 21)
+; (check-equal? ((double inc) 6) 8)
+; (check-equal? ((double square) 3) 81)
+
+; 1.42
+
+(define (compose f g)
+  (lambda (x) (f (g x))))
+
+
+; (define (double x)
+;   (* x 2))
+
+; (check-equal? ((compose square inc) 6) 49)
+; (check-equal? ((compose inc double) 6) 13)
+; (check-equal? ((compose double inc) 6) 14)
+
+; 1.43
+
+; (define (repeated f n)
+;   (define (repeat-iter g n)
+;     (if (= n 1) g
+;       (repeat-iter (compose f g) (- n 1))))
+
+;   (repeat-iter f n))
+
+; ((repeated square 2) 6)
+
+; ((compose inc inc) 6)
+
+; 6 в квадрате 1 раз
+; (square 6)
+; 6 в квадрате 2 раз
+; (square (square 6))
+
+
+; (check-equal? ((repeated square 1) 6) 36)
+; (check-equal? ((repeated square 2) 5) 625)
+; (check-equal? ((repeated inc 10) 10) 20)
+
+
+; 1.44
+; (define (smooth f)
+;   (define dx 0.000001)
+;   (lambda (x) (/ 
+;     (+ (f (- x dx))
+;        (f x)
+;        (f (+ x dx))) 3)))
+
+; (define (cube x)
+;   (* x x x))
+; (check-equal? (round ((smooth square) 3)) 9.0)
+; (check-equal? (round ((smooth cube) 10)) 1000.0)
 
